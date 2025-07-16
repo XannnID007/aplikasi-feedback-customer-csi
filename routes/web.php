@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\UmpanBalikController as AdminUmpanBalikController
 use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\Admin\KategoriController;
 use App\Http\Controllers\Admin\PertanyaanController;
+use App\Http\Controllers\Admin\CabangController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,6 +35,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Cabang Management
+    Route::resource('cabang', CabangController::class);
 
     // Umpan Balik Management
     Route::resource('umpan-balik', AdminUmpanBalikController::class);

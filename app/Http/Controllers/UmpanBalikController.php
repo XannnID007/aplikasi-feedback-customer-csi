@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\UmpanBalik;
 use App\Models\DetailUmpanBalik;
 use App\Models\Pertanyaan;
+use App\Models\Cabang;
 use Illuminate\Support\Facades\DB;
 
 class UmpanBalikController extends Controller
@@ -13,6 +14,7 @@ class UmpanBalikController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'cabang_id' => 'required|exists:cabang,id',
             'tanggal_kunjungan' => 'required|date',
             'nama_pelanggan' => 'nullable|string|max:255',
             'email_pelanggan' => 'nullable|email|max:255',
@@ -24,6 +26,7 @@ class UmpanBalikController extends Controller
         DB::transaction(function () use ($request) {
             // Simpan data umpan balik utama
             $umpanBalik = UmpanBalik::create([
+                'cabang_id' => $request->cabang_id,
                 'nama_pelanggan' => $request->nama_pelanggan,
                 'email_pelanggan' => $request->email_pelanggan,
                 'telepon_pelanggan' => $request->telepon_pelanggan,

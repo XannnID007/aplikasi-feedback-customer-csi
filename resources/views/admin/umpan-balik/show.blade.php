@@ -11,10 +11,46 @@
                 <p class="text-gray-600 mt-1">{{ $umpanBalik->created_at->format('d F Y, H:i') }}</p>
             </div>
             <a href="{{ route('admin.umpan-balik.index') }}"
-                class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
+                class="inline-flex items-center px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18">
+                    </path>
+                </svg>
                 Kembali
             </a>
         </div>
+
+        <!-- Cabang Info -->
+        @if ($umpanBalik->cabang)
+            <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-900 mb-4">Informasi Cabang</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Nama Cabang</label>
+                        <p class="mt-1 text-lg font-semibold text-maroon-700">{{ $umpanBalik->cabang->nama_cabang }}</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Alamat</label>
+                        <p class="mt-1 text-sm text-gray-900">{{ $umpanBalik->cabang->alamat }}</p>
+                    </div>
+
+                    @if ($umpanBalik->cabang->telepon)
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Telepon</label>
+                            <p class="mt-1 text-sm text-gray-900">{{ $umpanBalik->cabang->telepon }}</p>
+                        </div>
+                    @endif
+
+                    @if ($umpanBalik->cabang->jam_operasional)
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Jam Operasional</label>
+                            <p class="mt-1 text-sm text-gray-900">{{ $umpanBalik->cabang->jam_operasional }}</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        @endif
 
         <!-- Customer Info -->
         <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
@@ -78,7 +114,8 @@
                     <div class="space-y-4">
                         @foreach ($details as $detail)
                             <div class="bg-gray-50 rounded-lg p-4">
-                                <p class="text-sm font-medium text-gray-700 mb-2">{{ $detail->pertanyaan->teks_pertanyaan }}
+                                <p class="text-sm font-medium text-gray-700 mb-2">
+                                    {{ $detail->pertanyaan->teks_pertanyaan }}
                                 </p>
                                 <div class="flex items-center">
                                     <span

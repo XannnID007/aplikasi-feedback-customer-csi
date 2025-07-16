@@ -12,6 +12,7 @@ class UmpanBalik extends Model
     protected $table = 'umpan_balik';
 
     protected $fillable = [
+        'cabang_id',
         'nama_pelanggan',
         'email_pelanggan',
         'telepon_pelanggan',
@@ -26,6 +27,11 @@ class UmpanBalik extends Model
     ];
 
     // Relasi
+    public function cabang()
+    {
+        return $this->belongsTo(Cabang::class, 'cabang_id');
+    }
+
     public function detailUmpanBalik()
     {
         return $this->hasMany(DetailUmpanBalik::class, 'umpan_balik_id');

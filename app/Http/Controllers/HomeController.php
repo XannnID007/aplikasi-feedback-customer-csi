@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\KategoriPenilaian;
 use App\Models\Pertanyaan;
+use App\Models\Cabang;
 
 class HomeController extends Controller
 {
@@ -26,6 +27,8 @@ class HomeController extends Controller
             }])
             ->get();
 
-        return view('feedback.form', compact('kategori'));
+        $cabang = Cabang::aktif()->urutan()->get();
+
+        return view('feedback.form', compact('kategori', 'cabang'));
     }
 }

@@ -73,6 +73,17 @@
                     Dashboard
                 </a>
 
+                <a href="{{ route('admin.cabang.index') }}"
+                    class="flex items-center px-4 py-3 text-sm font-medium text-white rounded-lg hover:bg-maroon-800 transition-colors duration-200
+                          {{ request()->routeIs('admin.cabang.*') ? 'bg-maroon-800' : '' }}">
+                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                        </path>
+                    </svg>
+                    Kelola Cabang
+                </a>
+
                 <a href="{{ route('admin.umpan-balik.index') }}"
                     class="flex items-center px-4 py-3 text-sm font-medium text-white rounded-lg hover:bg-maroon-800 transition-colors duration-200
                           {{ request()->routeIs('admin.umpan-balik.*') ? 'bg-maroon-800' : '' }}">
@@ -133,10 +144,6 @@
                     </div>
                 </div>
                 <div class="mt-3 space-y-1">
-                    <a href="{{ route('admin.profile.edit') }}"
-                        class="block px-2 py-1 text-sm text-maroon-300 hover:text-white transition-colors duration-200">
-                        Profil
-                    </a>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
                         <button type="submit"

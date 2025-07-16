@@ -6,12 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\UmpanBalik;
 use App\Models\KategoriPenilaian;
+use App\Models\Cabang;
 
 class UmpanBalikController extends Controller
 {
     public function index(Request $request)
     {
-        $query = UmpanBalik::with(['detailUmpanBalik.pertanyaan.kategori'])
+        $query = UmpanBalik::with(['detailUmpanBalik.pertanyaan.kategori', 'cabang'])
             ->orderBy('created_at', 'desc');
 
         if ($request->has('tanggal_mulai') && $request->tanggal_mulai) {
@@ -22,14 +23,19 @@ class UmpanBalikController extends Controller
             $query->whereDate('tanggal_kunjungan', '<=', $request->tanggal_selesai);
         }
 
-        $umpanBalik = $query->paginate(15);
+        if ($request->has('cabang_id') && $request->cabang_id) {
+            $query->where('cabang_id', $request->cabang_id);
+        }
 
-        return view('admin.umpan-balik.index', compact('umpanBalik'));
+        $umpanBalik = $query->paginate(15);
+        $cabang = Cabang::aktif()->urutan()->get();
+
+        return view('admin.umpan-balik.index', compact('umpanBalik', 'cabang'));
     }
 
     public function show(UmpanBalik $umpanBalik)
     {
-        $umpanBalik->load(['detailUmpanBalik.pertanyaan.kategori']);
+        $umpanBalik->load(['detailUmpanBalik.pertanyaan.kategori', 'cabang']);
 
         return view('admin.umpan-balik.show', compact('umpanBalik'));
     }
