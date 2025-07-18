@@ -127,6 +127,19 @@
                     </svg>
                     Pertanyaan
                 </a>
+
+                @if (auth()->user()->isSuperAdmin())
+                    <a href="{{ route('admin.users.index') }}"
+                        class="flex items-center px-4 py-3 text-sm font-medium text-white rounded-lg hover:bg-maroon-800 transition-colors duration-200
+                              {{ request()->routeIs('admin.users.*') ? 'bg-maroon-800' : '' }}">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                            </path>
+                        </svg>
+                        Kelola Admin
+                    </a>
+                @endif
             </nav>
 
             <!-- User Menu -->
@@ -140,7 +153,9 @@
                     </div>
                     <div class="ml-3">
                         <p class="text-sm font-medium text-white">{{ auth()->user()->name }}</p>
-                        <p class="text-xs text-maroon-300">Administrator</p>
+                        <p class="text-xs text-maroon-300">
+                            {{ auth()->user()->isSuperAdmin() ? 'Super Admin' : 'Administrator' }}
+                        </p>
                     </div>
                 </div>
                 <div class="mt-3 space-y-1">

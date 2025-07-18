@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\Admin\KategoriController;
 use App\Http\Controllers\Admin\PertanyaanController;
 use App\Http\Controllers\Admin\CabangController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -45,12 +46,19 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     // Laporan CSI
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
     Route::get('/laporan/export', [LaporanController::class, 'export'])->name('laporan.export');
+    Route::get('/laporan/export-perbandingan', [LaporanController::class, 'exportPerbandingan'])->name('laporan.export-perbandingan');
 
     // Kategori Penilaian Management
     Route::resource('kategori', KategoriController::class);
 
     // Pertanyaan Management
     Route::resource('pertanyaan', PertanyaanController::class);
+
+    // User Management - Only for Super Admin
+    Route::middleware('super.admin')->group(function () {
+        Route::resource('users', UserController::class);
+        Route::patch('/users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggle-status');
+    });
 
     // Profile Management
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
