@@ -34,33 +34,37 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 // Admin Routes - Protected by Auth
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
-    // Dashboard
+    // Dashboard - Available for all authenticated users (admin & super_admin)
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // Cabang Management
-    Route::resource('cabang', CabangController::class);
-
-    // Umpan Balik Management
-    Route::resource('umpan-balik', AdminUmpanBalikController::class);
-
-    // Laporan CSI
-    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
-    Route::get('/laporan/export', [LaporanController::class, 'export'])->name('laporan.export');
-    Route::get('/laporan/export-perbandingan', [LaporanController::class, 'exportPerbandingan'])->name('laporan.export-perbandingan');
-
-    // Kategori Penilaian Management
-    Route::resource('kategori', KategoriController::class);
-
-    // Pertanyaan Management
-    Route::resource('pertanyaan', PertanyaanController::class);
-
-    // User Management - Only for Super Admin
+    // Super Admin Routes
     Route::middleware('super.admin')->group(function () {
+        // Cabang Management - Only Super Admin
+        Route::resource('cabang', CabangController::class);
+
+        // User Management - Only Super Admin
         Route::resource('users', UserController::class);
         Route::patch('/users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggle-status');
     });
 
-    // Profile Management
+    // Admin Routes (available for both admin and super_admin)
+    Route::middleware('admin.access')->group(function () {
+        // Umpan Balik Management
+        Route::resource('umpan-balik', AdminUmpanBalikController::class);
+
+        // Laporan CSI
+        Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+        Route::get('/laporan/export', [LaporanController::class, 'export'])->name('laporan.export');
+        Route::get('/laporan/export-perbandingan', [LaporanController::class, 'exportPerbandingan'])->name('laporan.export-perbandingan');
+
+        // Kategori Penilaian Management
+        Route::resource('kategori', KategoriController::class);
+
+        // Pertanyaan Management
+        Route::resource('pertanyaan', PertanyaanController::class);
+    });
+
+    // Profile Management - Available for all authenticated users
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
